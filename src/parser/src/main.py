@@ -20,14 +20,8 @@ def read_komu_file(file_path):
 def run_frontend(input_text):
     lexer = Lexer(input_text)
     tokens = lexer.tokenize()
-    # print("Tokens:", tokens)
-
-
     parser = Parser(tokens)
     ast_nodes = parser.parse()
-    # print(f"Parser Output (AST): \n {ast_nodes}")
-
-    # print("MISSSION NODE", MissionNode)
 
     list_of_dicts = [node.to_dict() for node in ast_nodes]
     # print(f"AST as list of dicts:\n {list_of_dicts}")
@@ -41,6 +35,9 @@ def run_frontend(input_text):
     return output_filename
 
 if __name__ == "__main__":
-    source_code = read_komu_file("examples/test.komu")
-    # print(source_code)
+    if len(sys.argv) != 2:
+        print("Usage: python main.py <source_file.komu>")
+        sys.exit(1)
+    file_path = sys.argv[1]
+    source_code = read_komu_file(file_path)
     run_frontend(source_code)

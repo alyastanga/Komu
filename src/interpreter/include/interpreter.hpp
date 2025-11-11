@@ -13,10 +13,9 @@ class ReturnException : public std::exception {
 public:
     KomuValue returnValue;
 
-    // Constructor: It takes the value we want to return
+    // Constructor: This takes the return value as a parameter
     ReturnException(const KomuValue& value) : returnValue(value) {}
 
-    // We can override what() to return a message, though we won't use it
     const char* what() const noexcept override {
         return "A 'return' statement was executed.";
     }

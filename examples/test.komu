@@ -1,4 +1,116 @@
-var a = 2;
-var c = "hello";
+// Comprehensive test file for Komu — exercises parser + interpreter features,
+// uses logln so each displayed item appears on its own line.
 
-log(c + " ", a);
+// Variables and arithmetic
+var a = 10;
+var b = 3;
+var sum = a + b;
+var diff = a - b;
+var prod = a * b;
+var div = a / b;
+
+logln("=== ARITHMETIC ===");
+logln("a =", a);
+logln("b =", b);
+logln("sum =", sum);
+logln("diff =", diff);
+logln("prod =", prod);
+logln("div =", div);
+
+// Strings and escapes
+var greeting = "Hello";
+var name = "Komu";
+var message = greeting + ", " + name + "!\nThis\tis\ta\ttest.";
+logln("=== STRINGS & ESCAPES ===");
+logln("message:", message);
+
+// Comparisons and booleans
+var isGreater = a > b;
+var isEqual = (a == b);
+var isNotEqual = (a != b);
+logln("=== COMPARISONS ===");
+logln("a > b:", isGreater);
+logln("a == b:", isEqual);
+logln("a != b:", isNotEqual);
+
+// Bitwise operations
+var bw_and = a & b;
+var bw_or  = a | b;
+var bw_xor = a ^ b;
+logln("=== BITWISE ===");
+logln("a & b:", bw_and);
+logln("a | b:", bw_or);
+logln("a ^ b:", bw_xor);
+
+// Logical operations
+var t = true;
+var f = false;
+logln("=== LOGICAL ===");
+logln("t || f:", t || f);
+logln("t && f:", t && f);
+logln("!f:", !f);
+
+// If / else
+logln("=== CONDITIONAL ===");
+if (a > b) {
+    logln("a is greater than b");
+} else {
+    logln("a is NOT greater than b");
+}
+
+// While loop, increments, and loop body side effects
+logln("=== WHILE LOOP ===");
+var i = 0;
+while (i < 3) {
+    logln("loop i =", i);
+    i++;
+}
+
+// Missions (functions), parameters, returns, nested calls
+mission add(x, y) {
+    return x + y;
+}
+
+mission greet(person) {
+    // string + string concatenation is allowed
+    logln("Greeting from mission: Hello,", person);
+}
+
+mission sum_three(a, b, c) {
+    return add(add(a, b), c);
+}
+
+logln("=== MISSIONS ===");
+logln("add(4,5):", add(4,5));
+greet("developer");
+logln("sum_three(1,2,3):", sum_three(1,2,3));
+
+// Recursive mission (factorial)
+mission fact(n) {
+    if (n <= 1) {
+        return 1;
+    } else {
+        return n * fact(n - 1);
+    }
+}
+
+logln("=== RECURSION ===");
+logln("fact(5):", fact(5));
+
+// Test return behavior in nested calls
+mission outer(x) {
+    var innerResult = inner(x);
+    return innerResult + 1;
+}
+mission inner(y) {
+    return y * 2;
+}
+
+logln("=== NESTED RETURNS ===");
+logln("outer(10):", outer(10));
+
+// Final: compute numeric result and print safely (avoid string+number concat)
+var finalNum = sum_three(2, 3, 4) + fact(3);
+
+logln("=== FINAL ===");
+logln("Final result:", finalNum);

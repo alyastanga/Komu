@@ -93,7 +93,7 @@ class ExpressionParser:
     def parse_factor(self):
         left_node = self.parse_primary()
         while (self.current_token.type == TokenType.ARITHMETIC_OPERATOR and 
-                                          self.current_token.value in {'*', '/'}):
+                                          self.current_token.value in {'*', '/', '%'}):
             operator_token = self.current_token            
             self.advance()
             right_node = self.parse_primary()

@@ -107,7 +107,7 @@ class Lexer:
 
             if (self.current_char.isdigit() or 
                     (self.current_char == '.' and 
-                    self.peek() is not None and self.peek().isdigit())):
+                    self.peek() is not None and self.peek().isdigit())): 
                 return self.get_number()
             
             if self.current_char == '"':

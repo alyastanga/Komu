@@ -24,7 +24,7 @@ fi
 
 echo "Running parser..."
 cd "$PROJECT_ROOT"
-python3 -m src.parser.src.main "${EXAMPLES_DIR}/$1"
+python3 -m src.parser.src.main "$1"
 
 
 echo "Running interpreter..."

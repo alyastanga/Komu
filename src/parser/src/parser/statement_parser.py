@@ -51,7 +51,8 @@ class StatementParser:
             self.expect(TokenType.KEYWORD) 
         identifier = self.expect(TokenType.IDENTIFIER)  
         self.expect(TokenType.ASSIGNMENT_OPERATOR)
-        token_node = self.parse_expression_statement()
+        token_node = self.parse_expression()
+        self.expect(TokenType.SEMICOLON)
 
         return VarAssignNode(IdentifierNode(identifier), token_node)
     

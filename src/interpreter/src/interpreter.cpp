@@ -4,7 +4,7 @@
 #include <variant>
 
 /**
- * @brief Evaluates an expression node and returns its integer value.
+ * @brief Evaluates binary expressions and returns a KomuValue.
  */
 
 KomuValue Interpreter::evaluate_binary_expression(const json& expr) {
@@ -107,6 +107,13 @@ KomuValue Interpreter::evaluate_binary_expression(const json& expr) {
                     throw std::runtime_error("Error: Division by zero, at line: " + std::to_string(line) + ".");
                 }
                 return KomuValue(left_value / right_value);
+            } else if(op == "%"){
+                if (right_value == 0) {
+                    throw std::runtime_error("Error: Modulo by zero, at line: " + std::to_string(line) + ".");
+                }
+                return KomuValue(static_cast<double>(static_cast<int>(left_value) % static_cast<int>(right_value)));
+            } else if(op == "**"){
+                return KomuValue(pow(left_value, right_value));    
             } else {
                 throw std::runtime_error("Error: Unknown binary operator '" + op + "' for numbers.");
             }
@@ -130,6 +137,10 @@ KomuValue Interpreter::evaluate_binary_expression(const json& expr) {
     }
     return KomuValue();
 }
+
+/**
+ * @brief Evaluates relational expressions and returns a boolean value.
+ */
 
 KomuValue Interpreter::evaluate_relational_expression(const json& expr){
     std::string type = expr.at("type");
@@ -209,6 +220,10 @@ KomuValue Interpreter::evaluate_relational_expression(const json& expr){
     throw std::runtime_error("Error: Cannot evaluate unhandled boolean expression type " + type + ".");
 }
 
+/**
+ * @brief Evaluates bitwise AND expressions.
+ */
+
 KomuValue Interpreter::evaluate_bitwise_and(const json& expr){
     std::string type = expr.at("type");
     if(type == "BitwiseOp" && expr.at("operator").get<std::string>() == "&"){
@@ -233,6 +248,10 @@ KomuValue Interpreter::evaluate_bitwise_and(const json& expr){
 
     throw std::runtime_error("Error: Cannot evaluate unhandled bitwise expression type '" + type + "'.");
 }
+
+/**
+ * @brief Evaluates bitwise XOR expressions.
+ */
 
 KomuValue Interpreter::evaluate_bitwise_xor(const json& expr){
     std::string type = expr.at("type");
@@ -259,6 +278,10 @@ KomuValue Interpreter::evaluate_bitwise_xor(const json& expr){
     throw std::runtime_error("Error: Cannot evaluate unhandled bitwise expression type '" + type + "'.");
 }
 
+/**
+ * @brief Evaluates bitwise OR expressions.
+ */
+
 KomuValue Interpreter::evaluate_bitwise_or(const json& expr){
     std::string type = expr.at("type");
     if(type == "BitwiseOp" && expr.at("operator").get<std::string>() == "|"){
@@ -284,6 +307,10 @@ KomuValue Interpreter::evaluate_bitwise_or(const json& expr){
     throw std::runtime_error("Error: Cannot evaluate unhandled bitwise expression type '" + type + "'.");
 }
 
+/**
+ * @brief Evaluates logical AND expressions.
+ */
+
 KomuValue Interpreter::evaluate_logical_and(const json& expr){
     std::string type = expr.at("type");
     if(type == "LogicalOp" && expr.at("operator").get<std::string>() == "&&"){
@@ -304,6 +331,10 @@ KomuValue Interpreter::evaluate_logical_and(const json& expr){
 
     throw std::runtime_error("Error: Cannot evaluate unhandled bitwise expression type '" + type + "'.");
 }
+
+/**
+ * @brief Evaluates logical OR expressions.
+ */
 
 KomuValue Interpreter::evaluate_logical_or(const json& expr){
     std::string type = expr.at("type");
@@ -326,6 +357,10 @@ KomuValue Interpreter::evaluate_logical_or(const json& expr){
 
     throw std::runtime_error("Error: Cannot evaluate unhandled bitwise expression type " + type + " at line: " + std::to_string(line) + ".");
 }
+
+/**
+ * @brief Prints a KomuValue to the console.
+ */
 
 void Interpreter::print_value(const KomuValue& kv){
     if(std::holds_alternative<double>(kv.value)){
@@ -358,6 +393,11 @@ void Interpreter::print_value(const KomuValue& kv){
         std::cout << "nil";
     }
 }
+
+/**
+ * @brief Handles the print mission.
+ */
+
 void Interpreter::print(const json& args){
     for (const auto& arg_node : args){
         try{
@@ -393,8 +433,12 @@ void Interpreter::execute_mission(const json& node) {
     }
     missions[mission_name] = mission;
     
-    std::cout << "Defined Mission: " << mission_name << std::endl;
+    //std::cout << "Defined Mission: " << mission_name << std::endl;
 }
+
+/**
+ * @brief Handles execution of return statements.
+ */
 
 void Interpreter::execute_return_statement(const json& node) {
     json value_node = node.at("value");
@@ -484,9 +528,6 @@ void Interpreter::execute_var_declaration(const json& node){
     try{
         KomuValue value = evaluate_logical_or(value_node);
         variables[var_name] = value;
-        // std::cout << "Declared Variable: " << var_name << " = ";
-        // print_value(value);
-        // std::cout << std::endl;
     }catch(std::runtime_error& e){
         std::cerr << "Runtime Error during variable declaration: " << e.what() << std::endl;
     }
@@ -579,18 +620,4 @@ void Interpreter::interpret(const json& ast_data){
     catch(const std::runtime_error& e){
         std::cerr << "Runtime Error: " << e.what() << std::endl;
     }
-//    std::cout << "End of Program\n Summary:" << std::endl;
-    
-//     std::cout << "Variables:" << std::endl;
-//     for(const auto& pair : variables){
-//         std::cout << "\t" << pair.first << " = ";
-//         print_value(pair.second); 
-//         std::cout << std::endl;
-//     }
-
-//     std::cout << "Missions:" << std::endl;
-//     for(const auto& pair : missions){
-//         std::cout << "\t" << pair.first << " (" << pair.second.parameters.size() << " params)" << std::endl;
-//     }
-
 }
