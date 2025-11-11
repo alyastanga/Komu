@@ -1,0 +1,4 @@
+var a = 2;
+var c = "hello";
+
+log(c + " ", a);
