@@ -1,0 +1,25 @@
+// --- conditional.komu ---
+// Tests if/else conditional statements.
+
+logln("=== CONDITIONAL (IF/ELSE) ===");
+var a = 20;
+var b = 5;
+
+logln("a =", a);
+logln("b =", b);
+
+if (a > b) {
+    logln("Test 1: a is greater than b");
+} else {
+    logln("Test 1: a is NOT greater than b");
+}
+
+if (a < b) {
+    logln("Test 2: a is less than b");
+} else {
+    logln("Test 2: a is NOT less than b");
+}
+
+if (a == 20) {
+    logln("Test 3: a is equal to 20");
+}

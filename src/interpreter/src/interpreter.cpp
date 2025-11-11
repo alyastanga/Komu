@@ -115,7 +115,7 @@ KomuValue Interpreter::evaluate_binary_expression(const json& expr) {
             } else if(op == "**"){
                 return KomuValue(pow(left_value, right_value));    
             } else {
-                throw std::runtime_error("Error: Unknown binary operator '" + op + "' for numbers.");
+                throw std::runtime_error("Error: Unknown binary operator '" + op + "' for numbers at line: " + std::to_string(line) + ".");
             }
         }
         
@@ -126,11 +126,11 @@ KomuValue Interpreter::evaluate_binary_expression(const json& expr) {
             if(op == "+"){
                 return KomuValue(left_str + right_str);
             } else {
-                throw std::runtime_error("Error: Operator '" + op + "' cannot be applied to strings.");
+                throw std::runtime_error("Error: Operator '" + op + "' cannot be applied to strings at line: " + std::to_string(line) + ".");
             }
         }
         else {
-            throw std::runtime_error("Error: Type mismatch for operator '" + op + "'. Cannot mix numbers, strings, or booleans. at line: " + std::to_string(line) + ".");
+            throw std::runtime_error("Error: Type mismatch for operator '" + op + "' Cannot mix numbers, strings, or booleans at line: " + std::to_string(line) + ".");
         }
     }else{
         throw std::runtime_error("Error: Cannot evaluate unhandled expression type '" + type + "' at line: " + std::to_string(line) + ".");
@@ -145,6 +145,7 @@ KomuValue Interpreter::evaluate_binary_expression(const json& expr) {
 KomuValue Interpreter::evaluate_relational_expression(const json& expr){
     std::string type = expr.at("type");
     std::string str_var_value;
+    int line = static_cast<int>(expr.at("line"));
     if(type == "UnaryOp"){
         std::string op = expr.at("operator").get<std::string>();
         json operand_expr = expr.at("node");
@@ -164,7 +165,7 @@ KomuValue Interpreter::evaluate_relational_expression(const json& expr){
             return variables.at(var_name);
         } 
         else{
-            std::cerr << "Error: Undefined boolean variable " << var_name << std::endl;
+            std::cerr << "Error: Undefined variable " << var_name << "at line: " <<  std::to_string(line) << std::endl;
             return KomuValue();
         }
         
@@ -187,7 +188,7 @@ KomuValue Interpreter::evaluate_relational_expression(const json& expr){
             if (op == "<=") { return KomuValue(left_value <= right_value); }
             if (op == ">")  { return KomuValue(left_value > right_value); }
             if (op == ">=") { return KomuValue(left_value >= right_value); }
-            throw std::runtime_error("Error: Unknown relational operator '" + op + "' for numbers.");
+            throw std::runtime_error("Error: Unknown relational operator '" + op + "' for numbers at line: " + std::to_string(line) + ".");
         }
 
         else if (std::holds_alternative<std::string>(left_kv.value) && std::holds_alternative<std::string>(right_kv.value)) {
@@ -196,7 +197,7 @@ KomuValue Interpreter::evaluate_relational_expression(const json& expr){
 
             if (op == "==") { return KomuValue(left_str == right_str); }
             if (op == "!=") { return KomuValue(left_str != right_str); }
-            throw std::runtime_error("Error: Operator '" + op + "' cannot be applied to strings.");
+            throw std::runtime_error("Error: Operator '" + op + "' cannot be applied to strings at line: " + std::to_string(line) + ".");
         }
         
         else if (std::holds_alternative<bool>(left_kv.value) && std::holds_alternative<bool>(right_kv.value)) {
@@ -205,19 +206,19 @@ KomuValue Interpreter::evaluate_relational_expression(const json& expr){
 
             if (op == "==") { return KomuValue(left_bool == right_bool); }
             if (op == "!=") { return KomuValue(left_bool != right_bool); }
-            throw std::runtime_error("Error: Operator '" + op + "' cannot be applied to booleans.");
+            throw std::runtime_error("Error: Operator '" + op + "' cannot be applied to booleans at line: " + std::to_string(line) + ".");
         }
 
         else {
             if (op == "==") { return KomuValue(false); }
             if (op == "!=") { return KomuValue(true); }
-            throw std::runtime_error("Error: Type mismatch for relational operator '" + op + "'.");
+            throw std::runtime_error("Error: Type mismatch for relational operator '" + op + "' at line: " + std::to_string(line) + ".");
         }
     }else{
         return evaluate_binary_expression(expr);
     }
 
-    throw std::runtime_error("Error: Cannot evaluate unhandled boolean expression type " + type + ".");
+    throw std::runtime_error("Error: Cannot evaluate unhandled boolean expression type " + type + " at line: " + std::to_string(line) + ".");
 }
 
 /**
@@ -226,6 +227,7 @@ KomuValue Interpreter::evaluate_relational_expression(const json& expr){
 
 KomuValue Interpreter::evaluate_bitwise_and(const json& expr){
     std::string type = expr.at("type");
+    int line = static_cast<int>(expr.at("line"));
     if(type == "BitwiseOp" && expr.at("operator").get<std::string>() == "&"){
         json left_expr = expr.at("left");
         json right_expr = expr.at("right");
@@ -246,7 +248,7 @@ KomuValue Interpreter::evaluate_bitwise_and(const json& expr){
         return evaluate_relational_expression(expr);
     }
 
-    throw std::runtime_error("Error: Cannot evaluate unhandled bitwise expression type '" + type + "'.");
+    throw std::runtime_error("Error: Cannot evaluate unhandled bitwise expression type '" + type + "' at line: " + std::to_string(line) + ".");
 }
 
 /**
@@ -255,6 +257,7 @@ KomuValue Interpreter::evaluate_bitwise_and(const json& expr){
 
 KomuValue Interpreter::evaluate_bitwise_xor(const json& expr){
     std::string type = expr.at("type");
+    int line = static_cast<int>(expr.at("line"));
     if(type == "BitwiseOp" && expr.at("operator").get<std::string>() == "^"){
         json left_expr = expr.at("left");
         json right_expr = expr.at("right");
@@ -275,7 +278,7 @@ KomuValue Interpreter::evaluate_bitwise_xor(const json& expr){
         return evaluate_bitwise_and(expr);
     }
 
-    throw std::runtime_error("Error: Cannot evaluate unhandled bitwise expression type '" + type + "'.");
+    throw std::runtime_error("Error: Cannot evaluate unhandled bitwise expression type '" + type + "' at line: " + std::to_string(line) + ".");
 }
 
 /**
@@ -284,6 +287,7 @@ KomuValue Interpreter::evaluate_bitwise_xor(const json& expr){
 
 KomuValue Interpreter::evaluate_bitwise_or(const json& expr){
     std::string type = expr.at("type");
+    int line = static_cast<int>(expr.at("line"));
     if(type == "BitwiseOp" && expr.at("operator").get<std::string>() == "|"){
         json left_expr = expr.at("left");
         json right_expr = expr.at("right");
@@ -304,7 +308,7 @@ KomuValue Interpreter::evaluate_bitwise_or(const json& expr){
         return evaluate_bitwise_xor(expr);
     }
 
-    throw std::runtime_error("Error: Cannot evaluate unhandled bitwise expression type '" + type + "'.");
+    throw std::runtime_error("Error: Cannot evaluate unhandled bitwise expression type '" + type + "' at line: " + std::to_string(line) + ".");
 }
 
 /**
@@ -313,6 +317,7 @@ KomuValue Interpreter::evaluate_bitwise_or(const json& expr){
 
 KomuValue Interpreter::evaluate_logical_and(const json& expr){
     std::string type = expr.at("type");
+    int line = static_cast<int>(expr.at("line"));
     if(type == "LogicalOp" && expr.at("operator").get<std::string>() == "&&"){
         json left_expr = expr.at("left");
         json right_expr = expr.at("right");
@@ -329,7 +334,7 @@ KomuValue Interpreter::evaluate_logical_and(const json& expr){
         return evaluate_bitwise_or(expr);
     }
 
-    throw std::runtime_error("Error: Cannot evaluate unhandled bitwise expression type '" + type + "'.");
+    throw std::runtime_error("Error: Cannot evaluate unhandled bitwise expression type '" + type + "' at line: " + std::to_string(line) + ".");
 }
 
 /**
@@ -338,7 +343,7 @@ KomuValue Interpreter::evaluate_logical_and(const json& expr){
 
 KomuValue Interpreter::evaluate_logical_or(const json& expr){
     std::string type = expr.at("type");
-    double line = expr.at("line");
+    int line = static_cast<int>(expr.at("line"));
     if(type == "LogicalOp" && expr.at("operator").get<std::string>() == "||"){
         json left_expr = expr.at("left");
         json right_expr = expr.at("right");
@@ -469,12 +474,19 @@ void Interpreter::execute_mission_call(const json& node) {
     } else if (mission_name == "input") {
         std::string user_input;
         std::getline(std::cin, user_input);
-        last_return_value = KomuValue(user_input); 
+
+        // This will treat the input as a number if possible, otherwise as a string
+        try {
+            double numeric_value = std::stod(user_input);
+            last_return_value = KomuValue(numeric_value);
+        } catch (const std::invalid_argument&) {
+            last_return_value = KomuValue(user_input);
+        }
         return;
     }
 
     if (missions.count(mission_name) == 0) {
-        throw std::runtime_error("Error: Calling undefined mission '" + mission_name + "'.");
+        throw std::runtime_error("Error: Calling undefined mission '" + mission_name + "' at line: " + std::to_string(static_cast<int>(node.at("line"))) + ".");
     }
     KomuMission mission = missions.at(mission_name);
     json arg_list;
@@ -586,18 +598,17 @@ void Interpreter::execute_statement(const json& stmt){
     std::string stmt_type = stmt.at("type");
     if(stmt_type == "Var"){
         execute_var_declaration(stmt);
-    }
-    else if(stmt_type == "Mission"){
+    } else if(stmt_type == "Mission"){
         execute_mission(stmt);
-    }else if(stmt_type == "MissionCall"){
+    } else if(stmt_type == "MissionCall"){
         execute_mission_call(stmt);
-    }else if(stmt_type == "Conditional"){
+    } else if(stmt_type == "Conditional"){
         execute_conditional(stmt);
     } else if(stmt_type == "While"){
         execute_while_loop(stmt);
-    }else if(stmt_type == "Return"){
+    } else if(stmt_type == "Return"){
         execute_return_statement(stmt);
-    }else{
+    } else{
         try{
             evaluate_logical_or(stmt);
         }catch(std::runtime_error& e){

@@ -1,0 +1,47 @@
+// --- mission.komu ---
+// Tests missions (functions), parameters, returns,
+// nested calls, and recursion.
+
+// Mission for simple arithmetic
+mission add(x, y) {
+    return x + y;
+}
+
+// Mission with string parameter
+mission greet(person) {
+    logln("Greeting from mission: Hello,", person);
+}
+
+// Mission with nested calls
+mission sum_three(a, b, c) {
+    return add(add(a, b), c);
+}
+
+// Recursive mission (factorial)
+mission fact(n) {
+    if (n <= 1) {
+        return 1;
+    } else {
+        return n * fact(n - 1);
+    }
+}
+
+// Missions for testing nested return behavior
+mission outer(x) {
+    var innerResult = inner(x);
+    return innerResult + 1;
+}
+mission inner(y) {
+    return y * 2;
+}
+
+logln("=== MISSIONS ===");
+logln("add(10, 5):", add(10, 5));
+greet("Aly");
+logln("sum_three(1, 2, 3):", sum_three(1, 2, 3));
+
+logln("=== RECURSION ===");
+logln("fact(5):", fact(5));
+
+logln("=== NESTED RETURNS ===");
+logln("outer(10):", outer(10));

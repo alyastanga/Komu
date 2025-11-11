@@ -1,0 +1,10 @@
+// --- loop.komu ---
+// Tests while loops and increment operators.
+
+logln("=== WHILE LOOP ===");
+var i = 0;
+while (i < 4) {
+    logln("loop iteration i =", i);
+    i++;
+}
+logln("Loop finished. Final i =", i);

@@ -1,0 +1,48 @@
+// --- var.komu ---
+// Tests variable declaration, assignment, arithmetic,
+// comparisons, logical, and bitwise operations.
+
+logln("=== VARIABLES & ARITHMETIC ===");
+var a = 10;
+var b = 4;
+
+var sum = a + b;
+var diff = a - b;
+var prod = a * b;
+var div = a / b;
+
+logln("a =", a);
+logln("b =", b);
+logln("sum (10+4) =", sum);
+logln("diff (10-4) =", diff);
+logln("prod (10*4) =", prod);
+logln("div (10/4) =", div);
+
+logln("=== STRINGS & ESCAPES ===");
+var greeting = "Hello";
+var name = "Komu";
+var message = greeting + ", " + name + "!\nThis\tis\ta\ttest.";
+logln(message);
+
+logln("=== COMPARISONS ===");
+var isGreater = a > b;
+var isEqual = (a == b);
+var isNotEqual = (a != b);
+logln("a > b (10 > 4):", isGreater);
+logln("a == b (10 == 4):", isEqual);
+logln("a != b (10 != 4):", isNotEqual);
+
+logln("=== LOGICAL OPS ===");
+var t = true;
+var f = false;
+logln("t || f:", t || f);
+logln("t && f:", t && f);
+logln("!f:", !f);
+
+logln("=== BITWISE OPS ===");
+var bw_and = a & b;
+var bw_or  = a | b;
+var bw_xor = a ^ b;
+logln("a & b (10 & 4):", bw_and);
+logln("a | b (10 | 4):", bw_or);
+logln("a ^ b (10 ^ 4):", bw_xor);

@@ -2,8 +2,15 @@
 // uses logln so each displayed item appears on its own line.
 
 // Variables and arithmetic
-var a = 10;
-var b = 3;
+log(p);
+logln("=== USER INPUT FOR VARIABLES ===");
+logln("Enter value for a:");
+var a = input();
+logln("Enter value for b:");
+var b = input();
+
+
+
 var sum = a + b;
 var diff = a - b;
 var prod = a * b;
@@ -18,8 +25,11 @@ logln("prod =", prod);
 logln("div =", div);
 
 // Strings and escapes
-var greeting = "Hello";
-var name = "Komu";
+logln("=== USER INPUT FOR STRINGS ===");
+logln("Enter a greeting:");
+var greeting = input();
+logln("Enter your name:");
+var name = input();
 var message = greeting + ", " + name + "!\nThis\tis\ta\ttest.";
 logln("=== STRINGS & ESCAPES ===");
 logln("message:", message);
@@ -82,7 +92,8 @@ mission sum_three(a, b, c) {
 
 logln("=== MISSIONS ===");
 logln("add(4,5):", add(4,5));
-greet("developer");
+logln("Enter a name to greet:");
+greet(input());
 logln("sum_three(1,2,3):", sum_three(1,2,3));
 
 // Recursive mission (factorial)
@@ -95,7 +106,9 @@ mission fact(n) {
 }
 
 logln("=== RECURSION ===");
-logln("fact(5):", fact(5));
+logln("Enter a number to calculate its factorial:");
+var factInput = input();
+logln("fact(", factInput, "):", fact(factInput));
 
 // Test return behavior in nested calls
 mission outer(x) {

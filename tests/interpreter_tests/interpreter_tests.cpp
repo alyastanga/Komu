@@ -1,24 +1,25 @@
+#include "interpreter.hpp"
+#include "json.hpp"
 #include "gtest/gtest.h"
-#include "interpreter.hpp"    
-#include "json.hpp"           
 
 using json = nlohmann::json;
 
-class InterpreterTest : public ::testing::Test {
-protected:
-    void SetUp() override {
-        interpreter = Interpreter();
-    }
+class InterpreterTest : public ::testing::Test
+{
+  protected:
+    void SetUp() override { interpreter = Interpreter(); }
 
     Interpreter interpreter;
 };
 
-TEST_F(InterpreterTest, HandlesEmptyAST) {
+TEST_F(InterpreterTest, HandlesEmptyAST)
+{
     json empty_ast = json::array();
     ASSERT_NO_THROW(interpreter.interpret(empty_ast));
 }
 
-TEST_F(InterpreterTest, HandlesSimpleArithmetic) {
+TEST_F(InterpreterTest, HandlesSimpleArithmetic)
+{
     json arithmetic_ast = R"(
     [
         {
@@ -55,13 +56,15 @@ TEST_F(InterpreterTest, HandlesSimpleArithmetic) {
     )"_json;
 
     interpreter.interpret(arithmetic_ast);
-    ASSERT_TRUE(true); 
+    ASSERT_TRUE(true);
 }
 
-TEST_F(InterpreterTest, HandlesVariableAssignment) {
+TEST_F(InterpreterTest, HandlesVariableAssignment)
+{
     // ...
 }
 
-TEST_F(InterpreterTest, HandlesConditionalIf) {
+TEST_F(InterpreterTest, HandlesConditionalIf)
+{
     // ...
 }
