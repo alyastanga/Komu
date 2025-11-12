@@ -1,0 +1,13 @@
+//no side effect or global variable
+var h = 2;
+
+mission test(){
+    logln(h);
+    return true;
+}
+
+log(h);
+
+if(test()){
+    
+}

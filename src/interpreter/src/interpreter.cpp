@@ -554,6 +554,8 @@ void Interpreter::execute_conditional(const json& node){
     KomuValue condition_kv = evaluate_logical_or(if_condition);
     bool condition_result = std::get<bool>(condition_kv.value);
     if(condition_result){
+        std::cout << node << std::endl;
+        std::cout << "----- execute_conditional condition_result true -----" << std::endl;
         json then_block = if_node.at("body");
         for(const auto& stmt : then_block){
             execute_statement(stmt);

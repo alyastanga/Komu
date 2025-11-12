@@ -45,7 +45,8 @@ class MissionNode:
             return {
                 "line": self.line,
                 "type": "Mission",
-                "identifier": self.identifier.name
+                "identifier": self.identifier.name,
+                "body": [stmt.to_dict() for stmt in self.body]
             }
 
 

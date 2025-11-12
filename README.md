@@ -136,7 +136,7 @@ The `scripts/` directory contains helper scripts:
 
 - **`compile.sh`**: Dynamically runs `.komu` files from the terminal.
   - Usage: `./scripts/compile.sh <filename.komu>`
-- **`format.sh`**: Formats the source code according to the project’s style guidelines.
+- **`run_test.sh`**: run the test files.
 - **`build.sh`**: Automates the build process for the project.
 
 ---
