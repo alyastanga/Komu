@@ -6,7 +6,6 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 PROJECT_ROOT=$( dirname "$SCRIPT_DIR" )
 BUILD_DIR="${PROJECT_ROOT}/build"
 
-# --- Remember where the USER is and what file they want ---
 USER_CWD=$(pwd)
 FILE_ARG="$1"
 
@@ -28,9 +27,7 @@ cmake -B "$BUILD_DIR" -S "$PROJECT_ROOT" > /dev/null
 cmake --build "$BUILD_DIR" > /dev/null
 
 # --- Run tests ---
-echo "Running Tests..."
-ctest --test-dir "$BUILD_DIR" --output-on-failure
-echo "All tests passed!"
+
 
 # --- Run the parser with the new, correct full path ---
 echo "Running parser..."

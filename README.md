@@ -8,8 +8,8 @@ Komu is a C++ project designed to provide a modular and extensible framework for
 
 Komu is a tool for processing `.komu` files, which are custom scripts written in a domain-specific language. The project includes:
 
-- A **parser** for interpreting `.komu` files.
-- An **interpreter** for executing the parsed scripts.
+- A **parser** for analyzing th syntax `.komu` files.
+- An **interpreter** for interpreting and excute the parsed scripts.
 - Support for **JSON serialization and deserialization** using the `nlohmann::json` library.
 - Examples and tests to demonstrate and validate its functionality.
 
@@ -28,11 +28,15 @@ Komu is a tool for processing `.komu` files, which are custom scripts written in
 
 ## 🛠 Requirements
 
-To build and run Komu, ensure you have the following installed:
+To build and run Komu, ensure the following dependencies are installed:
 
-- A **C++ compiler** with C++17 (or newer) support (e.g., GCC, Clang, MSVC)
-- **CMake** (version 3.10 or higher recommended)
-- **nlohmann::json** library for JSON parsing and serialization
+- A **C++ compiler** with C++17 (or newer) support (e.g., GCC 7+, Clang 5+, MSVC 2017+)
+- **Python 3** for running parser-related tests
+- **CMake** (version 3.10 or higher recommended) for project configuration and build
+- The **nlohmann::json** library for JSON parsing and serialization (included as a dependency)
+- **Git** (optional) for version control and cloning the repository
+- **CTest** and **Pytest** for running unit and integration tests
+
 
 ---
 
@@ -55,6 +59,7 @@ nlohmann::json data = {
     {"version", 1.0},
     {"features", {"parsing", "interpreting", "executing"}}
 };
+
 
 // Access data
 std::string name = data["name"];
@@ -88,21 +93,27 @@ Follow these steps to build Komu:
 
 ---
 
+---
+
 ## 🧪 Running Tests
 
 To ensure the project works as expected, run the tests:
 
+### Using `ctest` (for interpreter tests):
 ```bash
 ctest --output-on-failure
 ```
 
+
+### Using `pytest` (for parser tests):
+```bash
+pytest tests/parser
+```
+
 The tests cover the following areas:
 
-- **Parser tests**: Validate the correctness of `.komu` file parsing.
-- **Interpreter tests**: Ensure proper execution of parsed scripts.
-- **JSON tests**: Verify JSON serialization and deserialization.
-
----
+- **Parser tests**: Validate the correctness of `.komu` file parsing using `pytest`.
+- **Interpreter tests**: Ensure proper execution of parsed scripts using `ctest`.
 
 ## 📖 Examples
 
