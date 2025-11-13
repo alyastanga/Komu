@@ -1,6 +1,6 @@
 # Komu
 
-Komu is a C++ project designed to provide a modular and extensible framework for parsing, interpreting, and executing `.komu` files. It leverages modern C++ features and libraries to ensure high performance and maintainability.
+Komu is a C++ and Python project designed to provide a modular and extensible framework for parsing, interpreting, and executing `.komu` files. It leverages modern C++ features and libraries to ensure high performance and maintainability.
 
 ---
 
@@ -137,6 +137,7 @@ The `scripts/` directory contains helper scripts:
 - **`compile.sh`**: Dynamically runs `.komu` files from the terminal.
   - Usage: `./scripts/compile.sh <filename.komu>`
 - **`run_test.sh`**: run the test files.
+  - Usage: `./scripts/run_test.sh`
 - **`build.sh`**: Automates the build process for the project.
 
 ---

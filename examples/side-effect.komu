@@ -1,11 +1,12 @@
-//no side effect or global variable
+//no side effect
+
 var h = 2;
+a = 3;
 
 mission test(){
-    logln(h);
+    h = 3;
     return true;
 }
-
 log(h);
 
 if(test()){
