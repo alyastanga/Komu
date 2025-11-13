@@ -39,6 +39,7 @@ class Interpreter
 
     void execute_statement(const json& stmt);
     void execute_var_declaration(const json& node);
+    void execute_assignment(const json& node);
     void execute_mission(const json& node);
     void print_value(const KomuValue& kv);
     void print(const json& args);

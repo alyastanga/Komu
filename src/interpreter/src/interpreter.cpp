@@ -501,18 +501,25 @@ void Interpreter::execute_mission_call(const json& node) {
     }
 
     std::map<std::string, KomuValue> old_variables = variables;
-    variables.clear(); 
+    //variables.clear(); 
 
+    std::map<std::string, KomuValue> evaluated_args;
     for (size_t i = 0; i < mission.parameters.size(); ++i) {
         std::string param_name = mission.parameters[i];
         json arg_node = arg_list[i];
-        
-        std::map<std::string, KomuValue> local_scope_temp = variables;
-        variables = old_variables; 
-        KomuValue arg_value = evaluate_logical_or(arg_node);
-        variables = local_scope_temp; 
 
-        variables[param_name] = arg_value;
+        evaluated_args[param_name] = evaluate_logical_or(arg_node);
+        
+        // std::map<std::string, KomuValue> local_scope_temp = variables;
+        // variables = old_variables; 
+        // KomuValue arg_value = evaluate_logical_or(arg_node);
+        // variables = local_scope_temp; 
+
+        // variables[param_name] = arg_value;
+    }
+
+    for (const auto& pair : evaluated_args) {
+        variables[pair.first] = pair.second;
     }
 
     try {
@@ -547,6 +554,21 @@ void Interpreter::execute_var_declaration(const json& node){
     
 }
 
+void Interpreter::execute_assignment(const json& node) {
+    std::string identifier = node.at("identifier");
+    
+    if (variables.count(identifier) == 0) {
+        throw std::runtime_error("Error: Assignment to undefined variable '" + 
+                                 identifier + "' at line: " + 
+                                 std::to_string(static_cast<int>(node.at("line"))) + ".");
+    }
+
+    KomuValue value = evaluate_logical_or(node.at("value"));
+
+    //updates the variable in map
+    variables[identifier] = value;
+}
+
 
 void Interpreter::execute_conditional(const json& node){
     json if_node = node.at("if");
@@ -554,8 +576,6 @@ void Interpreter::execute_conditional(const json& node){
     KomuValue condition_kv = evaluate_logical_or(if_condition);
     bool condition_result = std::get<bool>(condition_kv.value);
     if(condition_result){
-        std::cout << node << std::endl;
-        std::cout << "----- execute_conditional condition_result true -----" << std::endl;
         json then_block = if_node.at("body");
         for(const auto& stmt : then_block){
             execute_statement(stmt);
@@ -600,6 +620,8 @@ void Interpreter::execute_statement(const json& stmt){
     std::string stmt_type = stmt.at("type");
     if(stmt_type == "Var"){
         execute_var_declaration(stmt);
+    } else if(stmt_type == "Assign"){
+        execute_assignment(stmt);
     } else if(stmt_type == "Mission"){
         execute_mission(stmt);
     } else if(stmt_type == "MissionCall"){
