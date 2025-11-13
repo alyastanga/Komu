@@ -158,23 +158,23 @@ class Resolver:
     
     def visit_BinaryOpNode(self, node: BinaryOpNode):
         """Resolves both sides of a binary operation."""
-        self.visit(node.left)
-        self.visit(node.right)
+        self.visit(node.left_node)
+        self.visit(node.right_node)
 
     def visit_RelationalOpNode(self, node: RelationalOpNode):
         """Resolves both sides of a relational operation."""
-        self.visit(node.left)
-        self.visit(node.right)
+        self.visit(node.left_node)
+        self.visit(node.right_node)
 
     def visit_LogicalOpNode(self, node: LogicalOpNode):
         """Resolves both sides of a logical operation."""
-        self.visit(node.left)
-        self.visit(node.right)
+        self.visit(node.left_node)
+        self.visit(node.right_node)
         
     def visit_BitwiseOpNode(self, node: BitwiseOpNode):
         """Resolves both sides of a bitwise operation."""
-        self.visit(node.left)
-        self.visit(node.right)
+        self.visit(node.left_node)
+        self.visit(node.right_node)
 
     def visit_UnaryOpNode(self, node: UnaryOpNode):
         """Resolves the operand of a unary operation."""

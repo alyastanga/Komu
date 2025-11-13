@@ -24,6 +24,11 @@ class TokenType(Enum):
     DOT = auto()
     EOF = auto()
 
+    def __repr__(self):
+        return f'TokenType.{self.name}'
+    def __str__(self):
+        return super().__str__()
+
 class Token:
     def __init__(self, type, value, line):
         self.type = type

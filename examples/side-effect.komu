@@ -1,13 +1,12 @@
 //no side effect
 
 var h = 2;
-a = 3;
 
 mission test(){
     h = 3;
     return true;
 }
-log(h);
+log(10/0);
 
 if(test()){
     
