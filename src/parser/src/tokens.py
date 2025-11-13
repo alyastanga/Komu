@@ -1,6 +1,7 @@
 from enum import Enum, auto
 
 class TokenType(Enum):
+    """Enumeration of possible token types in the source code."""
     IDENTIFIER = auto()
     NUMBER = auto()
     STRING = auto()

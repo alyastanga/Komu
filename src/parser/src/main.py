@@ -1,43 +1,53 @@
+import sys
+import json
 from .lexer.lexer import Lexer
 from .parser.parser import Parser
-from .nodes import *
-import json
-import os
-import sys
+from .resolver.resolver import Resolver
 
-def read_komu_file(file_path):
-    if not file_path.endswith('.komu'):
-        print("Error: Input file must have a .komu extension.")
-        sys.exit(1)
-    if not os.path.exists(file_path):
+def main(file_path):
+    try:
+        with open(file_path, 'r') as f:
+            source_code = f.read()
+    except FileNotFoundError:
         print(f"Error: File {file_path} does not exist.")
         sys.exit(1)
-    with open(file_path, 'r') as f:
-        return f.read()
 
-
-
-def run_frontend(input_text):
-    lexer = Lexer(input_text)
+    # Lexer -- Read source code and produce tokens
+    lexer = Lexer(source_code)
     tokens = lexer.tokenize()
+
+    # Parser -- Check syntax and build AST
     parser = Parser(tokens)
     ast_nodes = parser.parse()
 
-    list_of_dicts = [node.to_dict() for node in ast_nodes]
-    # print(f"AST as list of dicts:\n {list_of_dicts}")
-    output_filename = "build/ast_output.json"
-
-    with open(output_filename, 'w') as f:
-        json.dump(list_of_dicts, f, indent=4)
-    
-    # print(f"AST written to {output_filename}")
-
-    return output_filename
-
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python main.py <source_file.komu>")
+    # RESOLVER -- Semantic analysis and variable resolution
+    try:
+        resolver = Resolver()
+        resolver.resolve(ast_nodes)
+        print("Resolver check passed.")
+    except Exception as e:
+        print(e) # Print resolver errors
         sys.exit(1)
+
+    # JSON Output
+    ast_json = [node.to_dict() for node in ast_nodes]
+
+    project_root = sys.path[0] 
+    output_path = f"{project_root}/build/ast_output.json"
+    
+    try:
+        with open(output_path, 'w') as f:
+            json.dump(ast_json, f, indent=4)
+        print(f"AST successfully generated at {output_path}")
+    except Exception as e:
+        print(f"Error writing AST to JSON: {e}")
+        sys.exit(1)
+
+
+if __name__ == '__main__':
+    if len(sys.argv) != 2:
+        print("Usage: python3 -m src.parser.src.main <file_path.komu>")
+        sys.exit(1)
+    
     file_path = sys.argv[1]
-    source_code = read_komu_file(file_path)
-    run_frontend(source_code)
+    main(file_path)
