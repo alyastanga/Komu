@@ -2,6 +2,7 @@ from ..tokens import Token, TokenType
 from .lexer_constants import KEYWORDS, ARITHMETIC_OPERATORS, LOGICAL_OPERATORS, SINGLE_CHAR_TOKENS
 
 class Lexer:
+    """ This class is responsible for converting the input source code into tokens. """
     def __init__(self, input_text):
         self.input_text = input_text
         self.position = 0
@@ -12,6 +13,7 @@ class Lexer:
             self.current_char = None
 
     def advance(self):
+        """Advances the 'cursor' to the next character in the input text."""
         if self.current_char == '\n':
             self.line += 1
         self.position += 1
@@ -25,6 +27,7 @@ class Lexer:
             self.advance()
 
     def peek(self):
+        """Peeks at the next character without advancing the current position."""
         peek_pos = self.position + 1
         if peek_pos < len(self.input_text):
             return self.input_text[peek_pos]
@@ -32,6 +35,7 @@ class Lexer:
             return None
 
     def get_number(self):
+        """Extracts a number (integer or float) from the input text."""
         result = ''
         
         if self.current_char == '.':
@@ -53,6 +57,7 @@ class Lexer:
         return Token(TokenType.NUMBER, result , self.line)
 
     def get_string(self):
+        """Extracts a string literal from the input text."""
         result = ''
         while self.current_char is not None and self.current_char != '"':
             result += self.current_char
@@ -63,9 +68,11 @@ class Lexer:
         return Token(TokenType.STRING, result , self.line)
     
     def get_boolean(self, value):
+        """Extracts a boolean literal from the input text."""
         return Token(TokenType.BOOLEAN, value , self.line)
     
     def get_identifier_or_keyword(self):
+        """Extracts an identifier or keyword from the input text."""
         result = ''
         while self.current_char is not None and (self.current_char.isalnum() or self.current_char == '_'):
             result += self.current_char
@@ -75,6 +82,7 @@ class Lexer:
         return Token(TokenType.IDENTIFIER, result , self.line)
     
     def _check_keyword(self, keyword, token_type):
+        """Checks if the current position matches a specific keyword."""
         keyword_len = len(keyword)
 
         if self.input_text[self.position : self.position + keyword_len] == keyword:
@@ -95,6 +103,7 @@ class Lexer:
         return self.get_identifier_or_keyword()
     
     def get_next_token(self):
+        """Main method to get the next token from the input text."""
         while self.current_char is not None:
             if self.current_char.isspace():
                 self.skip_whitespace()
@@ -179,6 +188,7 @@ class Lexer:
         return Token(TokenType.EOF, None , self.line)
     
     def tokenize(self):
+        """Tokenizes the entire input text into a list of tokens."""
         tokens = []
         token = self.get_next_token()
         while token.type != TokenType.EOF:
