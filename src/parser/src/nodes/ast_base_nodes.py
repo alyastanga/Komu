@@ -1,6 +1,8 @@
+"""AST Base Nodes Module"""
 from ..tokens import Token
 
 class DataTypeNode:
+    """Base class for data type nodes in the AST."""
     def __init__(self, token):
         self.token = token
         self.value = token.value
@@ -17,6 +19,7 @@ class DataTypeNode:
         }
 
 class OperatorNode:
+    """Base class for operator nodes in the AST."""
     def __init__(self, left_node, operator_token, right_node):
         self.left_node = left_node
         self.operator_token = operator_token

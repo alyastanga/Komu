@@ -1,3 +1,4 @@
+"""Statement Nodes for the AST."""
 from .literal_nodes import IdentifierNode
 
 class VarAssignNode:
@@ -13,6 +14,23 @@ class VarAssignNode:
         return{
             "line": self.line,
             "type" : "Var",
+            "identifier": self.identifier.name,
+            "value": self.value.to_dict()
+        }
+    
+class AssignNode:
+    def __init__(self, identifier, value):
+        self.identifier = identifier
+        self.value = value
+        self.line = identifier.line
+    
+    def __repr__(self):
+        return f'AssignNode({self.identifier}, {self.value})'
+    
+    def to_dict(self):
+        return {
+            "line": self.line,
+            "type": "Assign",
             "identifier": self.identifier.name,
             "value": self.value.to_dict()
         }
@@ -77,7 +95,8 @@ class MissionCallNode:
                 "type": "MissionCall",
                 "identifier": self.value
             }
-        
+
+
 class ConditionalNode:
     def __init__(self, if_condition, if_body, else_if_condition = None, else_body = None):
         self.if_condition = if_condition
@@ -179,3 +198,4 @@ class ReturnNode:
             "type": "Return",
             "value": self.value.to_dict()
         }
+    

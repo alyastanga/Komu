@@ -1,3 +1,4 @@
+""""Literal Nodes for the AST"""
 from .ast_base_nodes import DataTypeNode
 
 class NumberNode(DataTypeNode):
@@ -23,7 +24,7 @@ class BooleanNode(DataTypeNode):
 
 class IdentifierNode:
     def __init__(self, token):
-        self.token = token  # <-- Renamed from self.Token
+        self.token = token 
         self.name = token.value
         self.line = token.line
 

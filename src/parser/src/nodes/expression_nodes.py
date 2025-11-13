@@ -1,3 +1,4 @@
+"""Expression Nodes for AST representation."""
 from .ast_base_nodes import OperatorNode
 
 class BinaryOpNode(OperatorNode):
@@ -23,7 +24,7 @@ class BitwiseOpNode(OperatorNode):
         data = super().to_dict()
         data["type"] = "BitwiseOp"
         return data
-    
+ 
 class UnaryOpNode:
     def __init__(self, operator_token, node):
         self.operator_token = operator_token
