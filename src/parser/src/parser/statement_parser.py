@@ -1,11 +1,16 @@
 # This file needs the statement and literal nodes
 from ..tokens import TokenType
 from ..nodes.literal_nodes import IdentifierNode
-from ..nodes.statement_nodes import (VarAssignNode, MissionNode, MissionCallNode, ConditionalNode,
-                                     WhileNode, ReturnNode)
+from ..nodes.statement_nodes import (VarAssignNode, MissionNode, ConditionalNode,
+                                     WhileNode, ReturnNode, AssignNode)
 
 class StatementParser:
+    """
+    Handles parsing all statements.
+    This class is intended to be inherited by the main Parser.
+    """
     def parse_statement(self):
+        """Parses a single statement based on the current token."""
         if self.current_token.type == TokenType.KEYWORD:
             if self.current_token.value == 'var':
                 return self.parse_var_declaration()
@@ -31,22 +36,26 @@ class StatementParser:
         raise Exception(f"Syntax Error: Unexpected Keyword {self.current_token}")
     
     def parse_expression_statement(self):
+        """Parses an expression followed by a semicolon as a statement."""
         expr_node = self.parse_expression()
         self.expect(TokenType.SEMICOLON)
         return expr_node
 
     def parse_mission_statement(self):
+        """Parses a mission (function) declaration statement."""
         self.expect(TokenType.KEYWORD)   
         identifier = self.expect(TokenType.IDENTIFIER) 
         if self.current_token.type == TokenType.LPAREN:
             params = self.parameters()
         else:
             params = [] 
+        
         body = self.parse_block()
 
         return MissionNode(IdentifierNode(identifier), params, body)
 
     def parse_var_declaration(self):
+        """Parses a variable declaration statement."""
         if self.current_token.type == TokenType.KEYWORD and self.current_token.value == 'var':
             self.expect(TokenType.KEYWORD) 
         identifier = self.expect(TokenType.IDENTIFIER)  
@@ -57,6 +66,7 @@ class StatementParser:
         return VarAssignNode(IdentifierNode(identifier), token_node)
     
     def parameters(self):
+        """Parses a list of parameters for missions (functions)."""
         params = []
         self.expect(TokenType.LPAREN)
         
@@ -74,6 +84,7 @@ class StatementParser:
         return params
     
     def parse_block(self):
+        """Parses a block of statements enclosed in braces."""
         statements = []
         self.expect(TokenType.LBRACE)
 
@@ -85,6 +96,7 @@ class StatementParser:
         return statements
 
     def parse_conditional(self):
+        """Parses an if-else conditional statement."""
         self.expect(TokenType.KEYWORD)  
         self.expect(TokenType.LPAREN)    
         if_condition = self.parse_expression()  
@@ -110,6 +122,7 @@ class StatementParser:
         return ConditionalNode(if_condition, if_body, else_if_nodes, else_body)
     
     def parse_while_loop(self):
+        """Parses a while loop statement."""
         self.expect(TokenType.KEYWORD)
         self.expect(TokenType.LPAREN)
         loop_condition = self.parse_expression()
@@ -119,14 +132,16 @@ class StatementParser:
         return WhileNode(loop_condition, loop_body)
     
     def parse_var_reassignment(self):
+        """Parses a variable reassignment statement."""
         identifier = self.expect(TokenType.IDENTIFIER)
         self.expect(TokenType.ASSIGNMENT_OPERATOR)
-        token_node = self.parse_expression_statement()
+        value = self.parse_expression_statement()
 
 
-        return VarAssignNode(IdentifierNode(identifier), token_node)
+        return AssignNode(IdentifierNode(identifier), value)
     
     def parse_return_statement(self):
+        """Parses a return statement."""
         self.expect(TokenType.KEYWORD)  
         return_value = self.parse_expression()
         self.expect(TokenType.SEMICOLON)

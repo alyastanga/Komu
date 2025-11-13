@@ -11,9 +11,11 @@ class ExpressionParser:
     This class is intended to be inherited by the main Parser.
     """
     def parse_expression(self):
+        """Parses an expression based on operator precedence."""
         return self.parse_logical_or()
     
     def parse_logical_or(self):
+        """parses logical OR expressions."""
         left_node = self.parse_logical_and()
         while (self.current_token.type == TokenType.LOGICAL_OPERATOR and
                                           self.current_token.value == '||'):
