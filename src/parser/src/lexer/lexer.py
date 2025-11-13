@@ -187,7 +187,7 @@ class Lexer:
         
         return Token(TokenType.EOF, None , self.line)
     
-    def tokenize(self):
+    def scanTokens(self):
         """Tokenizes the entire input text into a list of tokens."""
         tokens = []
         token = self.get_next_token()

@@ -17,7 +17,7 @@ def test_simple_variable_declaration():
     
     # 1. Run the lexer
     lexer = Lexer(code)
-    tokens = lexer.tokenize()
+    tokens = lexer.scanTokens()
     
     # 2. Run the parser 
     parser = Parser(tokens)
