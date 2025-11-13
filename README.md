@@ -4,6 +4,9 @@ Komu is a C++ and Python project designed to provide a modular and extensible fr
 
 ---
 
+## Flowchart
+![The flowchart of Komu project](image.png)
+
 ## ✨ Main Functionality
 
 Komu is a tool for processing `.komu` files, which are custom scripts written in a domain-specific language. The project includes:
