@@ -14,7 +14,7 @@ def main(file_path):
 
     # Lexer -- Read source code and produce tokens
     lexer = Lexer(source_code)
-    tokens = lexer.tokenize()
+    tokens = lexer.scanTokens()
 
     # Parser -- Check syntax and build AST
     parser = Parser(tokens)

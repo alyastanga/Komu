@@ -137,12 +137,10 @@ To run an example, use the `compile.sh` script:
 
 The `scripts/` directory contains helper scripts:
 
-- **`compile.sh`**: Dynamically runs `.komu` files from the terminal.
+- **`compile.sh`**: Automates the build process for the project and dynamically runs `.komu` files from the terminal.
   - Usage: `./scripts/compile.sh <filename.komu>`
 - **`run_test.sh`**: run the test files.
   - Usage: `./scripts/run_test.sh`
-- **`build.sh`**: Automates the build process for the project.
-
 ---
 
 ## 📦 Build Output
